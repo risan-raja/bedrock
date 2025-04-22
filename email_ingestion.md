@@ -27,7 +27,7 @@ The system will classify incoming emails into the following categories:
  1. Structured Metadata Extraction. {From, to, subject, date etc}
  2. New/Old Crew Member
  3. Message Extraction
- 4. Attachment Processing Queueue
+ 4. Attachment Processing Queue
  5. Document Identification 
  6. Text Classification
  7. Prepopulate features from historical data.
@@ -51,7 +51,7 @@ flowchart TD
     C --> Q[[Document Data Extraction]]
     D --> R[Structured Attachment Record]
     Q --> R[Structured Attachment Record]
-    R --> |Store in Database|AB[Update Document Parse DB]
+    R --> |Store in Database|AB[(Update Document Parse DB)]
     M --> E[Text Classification]
     R --> |input| F{Email Classification}
     E --> |input| F{Email Classification}
