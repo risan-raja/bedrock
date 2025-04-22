@@ -23,7 +23,7 @@ The system will classify incoming emails into the following categories:
    - A dashboard will allow the Crew Planning team to review emails, monitor AI classification accuracy, and track the progress of each email.
 
 
-Email Classification Components
+**Email Classification Components**
  1. Structured Metadata Extraction. {From, to, subject, date etc}
  2. New/Old Crew Member
  3. Message Extraction
@@ -32,6 +32,14 @@ Email Classification Components
  6. Text Classification
  7. Prepopulate features from historical data.
 
+
+
+**Possible statuses**
+ - Processing
+ - Tagged for Manual Review
+ - Completed
+ - Awaiting User Input
+
 ```mermaid
 flowchart TD
     A[Email Ingestion] --> B[Structured Metadata Extraction]
@@ -39,14 +47,25 @@ flowchart TD
     A --> M[Message Extraction]
     B --> L[[New/Old Crew Member]]
     L --> N[Metadata Vector]
-    C --> D[Document Identification]
+    C --> D[[Document Identification]]
+    C --> Q[[Document Data Extraction]]
+    D --> R[Structured Attachment Record]
+    Q --> R[Structured Attachment Record]
+    R --> |Store in Database|AB[Update Document Parse DB]
     M --> E[Text Classification]
+    R --> |input| F{Email Classification}
     E --> |input| F{Email Classification}
-    D --> |input| F{Email Classification}
     N --> |input| F{Email Classification}
-    F -->|Policy and Document Inquiry| H[Automated Response]
+    F -->|Policy and Document Inquiry| H[[RAG Based QA]]
+    F -->|Document Submission| J[[Store Document]]
     F -->|Assignment Change Request| I[Create Ticket]
-    F -->|Document Submission| J[Store Document]
     F -->|Unclear or Emergency| K[Escalate to Human Agent]
+    H --> P[Automated Response]
+    J --> P
+
 ```
+
+## Component Explaination
+
+## Classification Framework
 
