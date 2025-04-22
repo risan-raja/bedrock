@@ -1,0 +1,15 @@
+flowchart TD
+    A[Email Ingestion] --> B[Structured Metadata Extraction]
+    A --> C[Attachment Processing Queue]
+    A --> M[Message Extraction]
+    B --> L[[New/Old Crew Member]]
+    L --> N[Metadata Vector]
+    C --> D[Document Identification]
+    M --> E[Text Classification]
+    E --> |input| F{Email Classification}
+    D --> |input| F{Email Classification}
+    N --> |input| F{Email Classification}
+    F -->|Policy and Document Inquiry| H[Automated Response]
+    F -->|Assignment Change Request| I[Create Ticket]
+    F -->|Document Submission| J[Store Document]
+    F -->|Unclear or Emergency| K[Escalate to Human Agent]

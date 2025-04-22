@@ -25,23 +25,28 @@ The system will classify incoming emails into the following categories:
 
 Email Classification Components
  1. Structured Metadata Extraction. {From, to, subject, date etc}
- 2. Message Extraction
- 3. Attachment Processing Queueue
- 4. Document Identification + Text Classification -> Email Classification
- 5. Prepopulate features from historical data.
+ 2. New/Old Crew Member
+ 3. Message Extraction
+ 4. Attachment Processing Queueue
+ 5. Document Identification 
+ 6. Text Classification
+ 7. Prepopulate features from historical data.
 
 ```mermaid
 flowchart TD
     A[Email Ingestion] --> B[Structured Metadata Extraction]
     A --> C[Attachment Processing Queue]
-    A --> H[Message Extraction]
+    A --> M[Message Extraction]
+    B --> L[[New/Old Crew Member]]
+    L --> N[Metadata Vector]
     C --> D[Document Identification]
-    D --> E[Text Classification]
-    E --> F[Email Classification]
-    F --> G{Decision}
-    G -->|Policy and Document Inquiry| H[Automated Response]
-    G -->|Assignment Change Request| I[Create Ticket]
-    G -->|Document Submission| J[Store Document]
-    G -->|Unclear or Emergency| K[Escalate to Human Agent]
-
+    M --> E[Text Classification]
+    E --> |input| F{Email Classification}
+    D --> |input| F{Email Classification}
+    N --> |input| F{Email Classification}
+    F -->|Policy and Document Inquiry| H[Automated Response]
+    F -->|Assignment Change Request| I[Create Ticket]
+    F -->|Document Submission| J[Store Document]
+    F -->|Unclear or Emergency| K[Escalate to Human Agent]
 ```
+
