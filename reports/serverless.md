@@ -4,7 +4,7 @@ This document provides a brief overview of the differences between serverless an
 
 #### 1. OpenSearch Service 
 
-#### 1.1 Data Partitioning Models
+##### 1.1 Data Partitioning Models
 
 **TL;DR**: Pooling Model comingles data and controls access through fine-grained access control where as Silo Model would either need to create a separate cluster or create separate indexes to achieve data isolation. 
 
@@ -29,9 +29,9 @@ flowchart TD
 
 ```
 
-### 2. OpenSearch Serverless
+#### 2. OpenSearch Serverless
 
-Create semantically separate collections and use **IAM Roles** and **Data Access policies** to control access to the collections. Completely managed deployment by automatically upgrading the collections and Encryption is used by default.
+Create semantically separate collections and use **IAM Roles** and **Data Access Policies(DAP)** to control access to the collections. Infra and Deployment is Completely managed deployment by AWS.
 
 ```mermaid
 flowchart TD
@@ -39,9 +39,24 @@ flowchart TD
     A --> AB[Time series]
     AA --> AAA[Elastic Search/ SQL]
     AA --> AAB[Vector Search]
+    AAA --> |DAP| AABA[Index]
+    AAB --> |DAP| AABB[Vector Index]
 ```
 
-**Amazon OpenSearch Ingestion** to configure a simple pipeline and ingest data into an Amazon OpenSearch Serverless collection. A pipeline is a resource that OpenSearch Ingestion provisions and manages. You can use a pipeline to filter, enrich, transform, normalize, and aggregate data.
+#### Data Ingestion
+
+**Amazon OpenSearch Ingestion** to configure a simple pipeline and ingest data into an Amazon OpenSearch Serverless collection/domain. A pipeline is a resource that OpenSearch Ingestion provisions and manages. You can use a pipeline to filter, enrich, transform, normalize, and aggregate data.
+
+This is **common** for both serverless and provisioned deployments. Where each data type/source has its own pipeline. 
 
 
-### Insights & Recommendations
+#### Ideal Scenario
+
+ - Having multiple domains (Silo -> Domain/tenant) for each tenant is ideal for security and isolation. However, it is costly and requires more management overhead. Ideally, one shared domain for all tenants and 3 individual domains for each tenant.
+ - But this quickly becomes a very costly option as it would require provisioning atleast **15 nodes** (3 master nodes and 2 data nodes for each domain) for production workloads.
+
+#### Recommendation
+
+ - **Serverless** is inherently a **domain per tenant** model without the added cost of having to maintain multiple clusters for each domain.
+ - It is a good option for small to medium workloads as only per compute is charged. Here **domain** is synonymous with **collection**.
+ - 
