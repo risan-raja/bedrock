@@ -45,18 +45,21 @@ flowchart TD
 
 #### Data Ingestion
 
-**Amazon OpenSearch Ingestion** to configure a simple pipeline and ingest data into an Amazon OpenSearch Serverless collection/domain. A pipeline is a resource that OpenSearch Ingestion provisions and manages. You can use a pipeline to filter, enrich, transform, normalize, and aggregate data.
+**Amazon OpenSearch Ingestion** will be used to configure pipelines and ingest data into an Amazon OpenSearch Serverless collection/domain. A pipeline is a resource that OpenSearch Ingestion provisions and manages. It can be used as a pipeline to filter, enrich, transform, normalize, or aggregate data.
 
+
+**TL;DR**
 This is **common** for both serverless and provisioned deployments. Where each data type/source has its own pipeline. 
 
 
-#### Ideal Scenario
+#### Ideal Scenario For Total Data Isolation and Performance
 
  - Having multiple domains (Silo -> Domain/tenant) for each tenant is ideal for security and isolation. However, it is costly and requires more management overhead. Ideally, one shared domain for all tenants and 3 individual domains for each tenant.
  - But this quickly becomes a very costly option as it would require provisioning atleast **15 nodes** (3 master nodes and 2 data nodes for each domain) for production workloads.
 
 #### Recommendation
 
- - **Serverless** is inherently a **domain per tenant** model without the added cost of having to maintain multiple clusters for each domain.
- - It is a good option for small to medium workloads as only per compute is charged. Here **domain** is synonymous with **collection**.
- - 
+ - **Serverless** is inherently a **domain per tenant** model without the added cost of having to maintain multiple clusters for each domain. 
+ - It is a good option for small to medium workloads as only per compute is charged. Here **domain** is synonymous with **collection**. Here creating multiple collections allows us to create a dedicated collection tuned for each **selected workload.**
+ - Until the data volume is large enough to warrant a dedicated cluster, serverless is the best option.
+
